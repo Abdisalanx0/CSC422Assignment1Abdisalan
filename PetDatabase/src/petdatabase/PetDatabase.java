@@ -94,26 +94,8 @@ public static int idCounter = 0;
     }//end of addPet
     
     public static void deletePet(){
-        System.out.print("Enter the ID of the pet you want to delete(ex:1): ");
-        int idToDelete = scanner.nextInt();
-        scanner.nextLine();
-
-        for (int i = 0; i < petsArray.size(); i++) {
-            Pet pet = petsArray.get(i);
-            if (pet.getID()== idToDelete) {
-               pet.setID(i-1);
-               petsArray.remove(i);
-             
-                System.out.println("Pet with ID " + idToDelete + " has been deleted.");
-               
-                rowCounter--;
-                return; 
-             
-            }
+      
         
-       
-        System.out.println("Pet with ID " + idToDelete + " not found in the list.");
-        }
         
   
     
