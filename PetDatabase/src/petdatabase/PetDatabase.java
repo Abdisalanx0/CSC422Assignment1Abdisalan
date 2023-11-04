@@ -5,15 +5,17 @@
 package petdatabase;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Iterator;
 /**
  *
  * @author Abdisalan
  */
 
 public class PetDatabase {
-public static ArrayList<pet> petsArray = new ArrayList<pet>();
+public static ArrayList<Pet> petsArray = new ArrayList<Pet>();
 public static Scanner scanner = new Scanner(System.in);
 public static int rowCounter = 0;
+public static int idCounter = 0;
     /**
      * @param args the command line arguments
      */
@@ -33,23 +35,15 @@ public static int rowCounter = 0;
         System.out.println ("7) Exit program");
         System.out.println(" Your choice:");
         int menuChoice =  scanner.nextInt();    
-        System.out.println(menuChoice);
         switch(menuChoice){
             
-            case 1 : viewAllPets();
-                        break;
-            case 2 : addPet();
-                        break;
-            case 3 : updatePet();
-                        break;
-            case 4 : deletePet();
-                        break;
-            case 5 : searchPetsByName();
-                        break;
-            case 6 :searchPetsByAge();
-                         break;
-            case 7: System.out.println("Thank you for using pet database");   
-                break;
+            case 1 :viewAllPets();break;
+            case 2 :addPet();break;
+            case 3 : updatePet();break;
+            case 4 : deletePet();break;
+            case 5 : searchPetsByName();break;             
+            case 6 :searchPetsByAge();break;
+            case 7 : System.out.println("Thank you for using pet database");break;
             
             
         }
@@ -88,8 +82,8 @@ public static int rowCounter = 0;
                 System.out.println("Invalid age. Please enter a valid integer.");
                 continue;
             }
-
-            pet newPet = new pet(name, age);
+            
+            Pet newPet = new Pet(idCounter++,name, age);
             petsArray.add(newPet);
             System.out.println("Pet added: " + newPet.getPetName());
             rowCounter++;
@@ -99,13 +93,88 @@ public static int rowCounter = 0;
    
     }//end of addPet
     
-    public static void deletePet(){}//end of deletePet
+    public static void deletePet(){
+        System.out.print("Enter the ID of the pet you want to delete(ex:1): ");
+        int idToDelete = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < petsArray.size(); i++) {
+            Pet pet = petsArray.get(i);
+            if (pet.getID()== idToDelete) {
+               pet.setID(i-1);
+               petsArray.remove(i);
+             
+                System.out.println("Pet with ID " + idToDelete + " has been deleted.");
+               
+                rowCounter--;
+                return; 
+             
+            }
+        
+       
+        System.out.println("Pet with ID " + idToDelete + " not found in the list.");
+        }
+        
+  
+    
+    
+    }//end of deletePet
     
     public static void updatePet(){}//end of updatePet
     
-    public static void searchPetsByName(){}//end of search pets by name 
+    public static void searchPetsByName(){
+        Scanner scanner2 = new Scanner(System.in);
+        int newRowCounter = 0;
+    System.out.print("Enter the name of the pet you want to find (e.g., roxxy): ");
+    String nameToSearch = scanner2.nextLine();
+     System.out.println("Pets with name '" + nameToSearch + "':");
+         printTableHeader();
+        for (Pet pet : petsArray) {
+            if ( pet  .getPetName().equalsIgnoreCase(nameToSearch)) {
+             
+                System.out.println("| "+pet.getID()+"|  "+pet.getPetName()+"\t"+"|"+pet.getAge()+" |");   
+                newRowCounter++;
+            }
+        }
+        rowCounter = newRowCounter;
+        printTableFooter();
+        rowCounter = petsArray.size();
+        System.out.println("No pets found with name '" + nameToSearch + "'.");
+        
+    
+    
+    
+    
+    }//end of search pets by name 
             
-    public static void searchPetsByAge() {}//end of search pets by age  
+    public static void searchPetsByAge() {
+     Scanner scanner2 = new Scanner(System.in);
+        int newRowCounter = 0;
+    System.out.print("Enter the Age of the pet you want to find (e.g.,5): ");
+    int ageToSearch = scanner2.nextInt();
+     System.out.println("Pets with the age of '" + ageToSearch + "':");
+         printTableHeader();
+        for (Pet pet : petsArray) {
+            if (pet.getAge() == ageToSearch) {
+             
+                System.out.println("| "+pet.getID()+"|  "+pet.getPetName()+"\t"+"|"+pet.getAge()+" |");   
+                newRowCounter++;
+            }
+        }
+        rowCounter = newRowCounter;
+        printTableFooter();
+        rowCounter = petsArray.size();
+        System.out.println("No pets found with the age of '" + ageToSearch + "'.");
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    }//end of search pets by age  
     
     
     public static void printTableHeader(){
@@ -114,16 +183,16 @@ public static int rowCounter = 0;
         System.out.println("+-------------------+");
 }//end of print Table Header
      public static void printTableRow(){
-         int counter = 0;
-          for (pet pet : petsArray) {
-            System.out.println("| "+counter+++"|  "+pet.getPetName()+"\t"+"|"+pet.getAge()+"  |");}        }
+      
+          for (Pet pet : petsArray) {
+            System.out.println("| "+pet.getID()+"|  "+pet.getPetName()+"\t"+"|"+pet.getAge()+" |");}        }
     
    
        
     
      public static void printTableFooter(){
         System.out.println("+-------------------+");
-        System.out.println(rowCounter+"rows in set");}//end of printTableRow
+        System.out.println(rowCounter+" rows in set");}//end of printTableRow
     
     
     
