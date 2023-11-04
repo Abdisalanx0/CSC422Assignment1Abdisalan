@@ -7,15 +7,14 @@ package petdatabase;
  */
 public class pet {
     int ID;
-    String name;
+    String petName;
     int age;
 
     public pet() {
     }
 
-    public pet(int ID, String name, int age) {
-        this.ID = ID;
-        this.name = name;
+    public pet(String petName, int age) {
+        this.petName = petName;
         this.age = age;
     }
 
@@ -33,6 +32,14 @@ public class pet {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public String getPetName() {
+        return petName;
+    }
+
+    public void setPetName(String petName) {
+        this.petName = petName;
     }
     
 }
