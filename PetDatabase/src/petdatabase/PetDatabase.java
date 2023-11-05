@@ -5,7 +5,7 @@
 package petdatabase;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 /**
  *
  * @author Abdisalan
@@ -62,7 +62,7 @@ public static int idCounter = 0;
             System.out.print("Enter pet name and age ('Name Age'): ");
             String input = scanner.nextLine();
 
-            if (input.equalsIgnoreCase("quit")) {
+            if (input.equalsIgnoreCase("done")) {
                 break;
             }
 
@@ -94,15 +94,63 @@ public static int idCounter = 0;
     }//end of addPet
     
     public static void deletePet(){
-      
+        System.out.print("Enter the ID of the pet you want to delete(ex:1): ");
+        int idToDelete = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < petsArray.size(); i++) {
+            Pet pet = petsArray.get(i);
+            if (pet.getID()== idToDelete) {
+               pet.setID(i-1);
+               petsArray.remove(i);
+             
+                System.out.println("Pet with ID " + idToDelete + " has been deleted.");
+               
+                rowCounter--;
+                return; 
+             
+            }
         
+       
         
-  
+        }
     
-    
+      System.out.println("Pet with ID " + idToDelete + " not found in the list.");
     }//end of deletePet
     
-    public static void updatePet(){}//end of updatePet
+    public static void updatePet(){
+    String newName;int newAge;
+    System.out.print("Enter the ID of the pet you want to Update(ex:1): ");
+    int idToUpdate = scanner.nextInt();
+    scanner.nextLine();
+      System.out.println("Enter a new name and age for your pet!");
+        String input = scanner.nextLine();
+          String[] parts = input.split(" ");
+            
+            if (parts.length != 2) {//check if they enter more or less than 2 inputs!
+                System.out.println("Invalid input. Please enter name and age separated by a space.");
+               
+            }
+
+             newName = parts[0];
+             newAge = Integer.parseInt(parts[1]);
+
+    for (int i = 0; i < petsArray.size(); i++) {
+            Pet pet = petsArray.get(i);
+            if (pet.getID()== idToUpdate) {
+               pet.setPetName(newName);
+               pet.setAge(newAge);
+               //System.out.println("Pet with ID " + idToDelete + " has been deleted.");
+               
+                return; 
+             
+            }
+        
+       
+        
+        }
+    
+    }//end of updatePet
     
     public static void searchPetsByName(){
         Scanner scanner2 = new Scanner(System.in);
