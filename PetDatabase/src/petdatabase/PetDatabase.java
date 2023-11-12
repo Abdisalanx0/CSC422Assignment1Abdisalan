@@ -4,6 +4,15 @@
  */
 package petdatabase;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -17,15 +26,18 @@ public class PetDatabase {
     public static Scanner scanner = new Scanner(System.in);
     public static int rowCounter = 0;
     public static int idCounter = 0;
-
+    public static String filename = "pets2.txt";
+    public static int counter = 0;
+    public static String[] SavePetsArray = new String[100];
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        loadPets();//When the program executes, it loads the data from the text file
         menu();
     }
 
-    public static void menu() {
+    public static void menu() throws IOException {
         while (true) {
             System.out.println("Pet Database Program");
             System.out.println("what would you like to do?");
@@ -59,8 +71,11 @@ public class PetDatabase {
                     searchPetsByAge();
                     break;
                 case 7:
+                    savePets();
+                    System.out.println("Data saved. Exiting.");
                     System.out.println("Thank you for using pet database");
-                    break;
+             
+                    return;
 
             }
         }
@@ -75,6 +90,10 @@ public class PetDatabase {
     public static void addPet() {
         String name;
         int age;
+        if (rowCounter >= 5) {
+        System.out.println("You've reached the maximum limit of 5 pets. Unable to add more.");
+        return; // Exit the method if the limit is reached
+    }
         System.out.println("please enter the pet Information below");
         scanner.nextLine();
         while (true) {
@@ -86,7 +105,7 @@ public class PetDatabase {
             }
 
             String[] parts = input.split(" ");
-
+            
             if (parts.length != 2) {//check if they enter more or less than 2 inputs!
                 System.out.println("Invalid input. Please enter name and age separated by a space.");
                 continue;
@@ -224,4 +243,37 @@ public class PetDatabase {
         System.out.println(rowCounter + " rows in set");
     }//end of printTableRow
 
+
+///////////Assignment 2////////////
+
+ public static void savePets() {
+    File myfile = new File(filename);
+    try (FileOutputStream fos = new FileOutputStream(myfile);
+         ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+        oos.writeObject(petsArray);
+        System.out.println("Data saved successfully.");
+    } catch (IOException ex) {
+        System.out.printf("Error occurred saving data: %s\n", ex);
+    }
 }
+ 
+ public static void loadPets() {
+    File myfile = new File(filename);
+    if (myfile.exists()) {
+        try (FileInputStream fis = new FileInputStream(myfile);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            petsArray = (ArrayList<Pet>) ois.readObject();
+            rowCounter = petsArray.size(); // Update the rowCounter
+            System.out.println("Data loaded successfully.");
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.printf("Error occurred loading data: %s\n", ex);
+        }
+    }
+ 
+ }
+ 
+ public static void petValidation(String name, int Age){
+    
+}
+}
+
