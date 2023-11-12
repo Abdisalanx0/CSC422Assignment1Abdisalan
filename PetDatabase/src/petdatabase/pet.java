@@ -5,7 +5,7 @@ package petdatabase;
  *
  * @author Abdisalan
  */
-public class pet {
+public class pet implements Serializable {
     int ID;
     String petName;
     int age;
